@@ -4,26 +4,23 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Permission
 
 # Create your views here.
-def login(request):
-    try :
-        if request.user.is_authenticated:
-            return redirect('/user/account/')
-        else:
-            if request.methode == 'POST':
-                username = request.POST['username']
-                password = request.POST['password']
-                user = authenticate(request, username, password)
-                if user is not None:
-                    login(request, user)
-                    return redirect('/user/account/')
-                else:
-                    return redirect('/user/login/')
-            template = 'login.html'
-            return render(request, template)
-    except:
-        return render(request, '404.html')
+def login_system(request):
+    if request.user.is_authenticated:
+        return redirect('/user/account/')
+    else:
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/user/account/')
+            else:
+                return redirect('/user/login/')
+        template = 'login_page.html'
+        return render(request, template)
 
-def logout(request):
+def logout_system(request):
     if request.user.is_authenticated:
         logout(request)
         return redirect('/')
